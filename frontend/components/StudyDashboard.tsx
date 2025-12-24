@@ -11,6 +11,7 @@ interface StudyDashboardProps {
 
 const StudyDashboard: React.FC<StudyDashboardProps> = ({ tasks, onboardingData, onStartTask, onMarkCompleted, onStartNewPlan }) => {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
 
   const examName = (onboardingData?.level || onboardingData?.skill || 'Study Plan').toUpperCase();
   const completedCount = tasks.filter(t => t.status === 'completed').length;
@@ -73,34 +74,56 @@ const StudyDashboard: React.FC<StudyDashboardProps> = ({ tasks, onboardingData, 
 
         <div className="space-y-6">
           {activeTasks.map((task, idx) => (
-            <div key={task.id} className={`study-card animate-fade-in ${task.status === 'completed' ? 'opacity-60 bg-slate-50/50' : ''}`} style={{ animationDelay: `${idx * 100}ms` }}>
-              {/* Image 4 Reference: Time Column */}
-              <div className="flex flex-col items-center justify-start pt-1 min-w-[80px] border-r border-slate-50 pr-6">
-                <div className="bg-slate-50 p-2 rounded-full mb-3 shadow-inner">
-                  <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <div key={task.id} className={`study-card animate-fade-in rounded-[32px] overflow-hidden ${task.status === 'completed' ? 'opacity-60 bg-slate-50/50' : 'bg-[#162032]'} p-6`} style={{ animationDelay: `${idx * 100}ms` }}>
+              {/* Image 4 Reference: Time Column - REMOVED per user request, replaced with simple icon */}
+              <div className="flex flex-col items-center justify-start pt-1 min-w-[60px] border-r border-white/10 pr-4">
+                <div className="bg-white/10 p-2 rounded-full mb-3 shadow-inner">
+                  <svg className="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
                 </div>
-                <span className="text-xs font-bold text-slate-600 mb-1">{idx === 0 ? "9:00 AM" : idx === 1 ? "11:00 AM" : idx === 2 ? "2:00 PM" : "4:00 PM"}</span>
-                <span className="text-[10px] font-medium text-slate-400">{task.duration}</span>
+                <span className="text-[10px] font-bold text-slate-300">Task {idx + 1}</span>
               </div>
 
               {/* Task Content */}
               <div className="flex-1 pl-2">
                 <div className="mb-4">
-                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">{task.subject}</p>
-                  <h4 className="text-lg font-bold text-primary tracking-tight mb-0.5">{task.topic}</h4>
-                  <p className="text-sm text-slate-500 font-light">{task.subtopic}</p>
+                  <p className="text-[11px] font-bold text-blue-200/80 uppercase tracking-widest mb-1">{task.subject}</p>
+                  <h4 className="text-lg font-bold text-white tracking-tight mb-0.5">{task.topic}</h4>
+                  <p className="text-sm text-slate-300 font-light">{task.subtopic}</p>
                 </div>
 
-                <div className="badge-reason mb-6 border border-sage-border/50 bg-sage-light/30">
-                  <svg className="w-3.5 h-3.5 text-sage-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                <button
+                  onClick={() => setExpandedTaskId(expandedTaskId === task.id ? null : task.id)}
+                  className="mb-6 border-none bg-transparent !text-white w-full text-left transition-all hover:bg-white/5 active:scale-[0.99] cursor-pointer rounded-2xl p-0 flex items-start gap-2"
+                >
+                  <svg
+                    className="w-3.5 h-3.5 text-white flex-shrink-0 mt-0.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
                   </svg>
-                  <span className="text-xs text-primary/80 font-medium">{task.aiExplanation.length > 100 ? task.aiExplanation.substring(0, 100) + "..." : task.aiExplanation}</span>
-                </div>
 
-                <div className="flex gap-4">
+                  <div className="flex flex-col">
+                    <span className={`text-xs text-white font-medium ${expandedTaskId === task.id ? '' : 'line-clamp-1'}`}>
+                      {task.aiExplanation}
+                    </span>
+                    {expandedTaskId !== task.id && task.aiExplanation.length > 100 && (
+                      <span className="text-[10px] text-white/70 mt-1 font-bold">Click to read more</span>
+                    )}
+                  </div>
+                </button>
+
+
+
+                <div className="flex gap-4 mt-auto pt-4">
                   {task.status === 'completed' ? (
                     <div className="flex items-center gap-2 border border-slate-100 px-6 py-2.5 rounded-xl text-[13px] font-bold text-slate-400 bg-slate-50">
                       <svg className="w-4 h-4 text-sage-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
@@ -110,13 +133,13 @@ const StudyDashboard: React.FC<StudyDashboardProps> = ({ tasks, onboardingData, 
                     <>
                       <button
                         onClick={() => onMarkCompleted(task)}
-                        className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95"
+                        className="bg-white hover:bg-slate-100 text-[#162032] px-6 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 flex items-center h-10"
                       >
                         Mark Complete
                       </button>
                       <button
                         onClick={() => onStartTask(task)}
-                        className="border border-slate-200 hover:bg-slate-50 text-slate-600 px-6 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all active:scale-95"
+                        className="border border-white/20 hover:bg-white/10 text-white px-6 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all active:scale-95 h-10"
                       >
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />

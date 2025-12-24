@@ -14,13 +14,16 @@ import UserProfile from './components/UserProfile';
 import AuthScreen from './components/AuthScreen';
 import ExamSelectionView from './components/ExamSelectionView';
 
+import LandingPage from './components/LandingPage';
+
 const App: React.FC = () => {
   const [token, setToken] = useState<string | null>(() => {
     const saved = localStorage.getItem('authToken');
     if (saved === 'undefined' || saved === 'null' || !saved) return null;
     return saved;
   });
-  const [currentScreen, setCurrentScreen] = useState<Screen>(token ? 'onboarding' : 'auth');
+  // Default to 'landing' if not authenticated
+  const [currentScreen, setCurrentScreen] = useState<Screen>(token ? 'onboarding' : 'landing');
   const [tasks, setTasks] = useState<StudyTask[]>([]);
   const [allPlans, setAllPlans] = useState<OnboardingData[]>([]);
   const [selectedPlan, setSelectedPlan] = useState<OnboardingData | null>(null);
@@ -198,7 +201,7 @@ const App: React.FC = () => {
     setSelectedPlan(null);
     setActiveTask(null);
     setIsProfileMenuOpen(false);
-    setCurrentScreen('auth');
+    setCurrentScreen('landing');
   };
 
   const handleShowUserProfile = () => {
@@ -207,6 +210,11 @@ const App: React.FC = () => {
   };
 
   const renderScreen = () => {
+    // Landing Page accessible without token
+    if (currentScreen === 'landing') {
+      return <LandingPage onGetStarted={() => setCurrentScreen('auth')} onLogin={() => setCurrentScreen('auth')} />;
+    }
+
     // Route Protection: Essential check
     if (!token) {
       return <AuthScreen onAuthSuccess={handleAuthSuccess} />;
@@ -303,10 +311,20 @@ const App: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const isUtilityScreen = ['chat', 'resources', 'quiz', 'learning', 'auth', 'onboarding', 'exam-selection'].includes(currentScreen);
+  const isUtilityScreen = ['chat', 'resources', 'quiz', 'learning', 'auth', 'onboarding', 'exam-selection', 'landing'].includes(currentScreen);
 
   return (
     <div className="min-h-screen flex flex-col">
+      {currentScreen !== 'landing' && (
+        <button
+          onClick={() => setCurrentScreen('landing')}
+          className="fixed top-6 right-6 z-[60] px-5 py-2.5 bg-white/80 backdrop-blur-md border border-slate-200 rounded-full text-xs font-bold text-slate-600 uppercase tracking-widest shadow-sm hover:bg-white hover:text-indigo-600 hover:shadow-md hover:scale-105 active:scale-95 transition-all"
+        >
+          Home
+        </button>
+      )}
+
+      {/* Main App Navigation (Floating Dock) */}
       {!isUtilityScreen && (
         <nav className="fixed top-8 left-0 right-0 z-50 flex justify-center px-6 pointer-events-none">
           <div className="max-w-xl w-full flex justify-between items-center pointer-events-auto glass-card px-3 py-2.5 rounded-[32px] shadow-2xl shadow-slate-200/50">
@@ -368,18 +386,20 @@ const App: React.FC = () => {
         </nav>
       )}
 
-      <main className={`flex-1 flex flex-col items-center justify-center ${!isUtilityScreen ? 'mt-32' : ''} animate-fade-in`}>
-        <div className="w-full max-w-4xl">
+      <main className={`flex-1 flex flex-col items-center justify-center ${!isUtilityScreen ? 'mt-32' : ''} animate-fade-in w-full`}>
+        <div className={`w-full ${currentScreen === 'landing' ? '' : 'max-w-4xl'}`}>
           {renderScreen()}
         </div>
       </main>
 
-      <footer className="py-8 flex justify-center opacity-40 pointer-events-none">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-[10px] text-white font-bold">S</div>
-          <span className="text-xs font-bold tracking-[0.2em] uppercase text-slate-900">SereneStudy AI</span>
-        </div>
-      </footer>
+      {!isUtilityScreen && (
+        <footer className="py-8 flex justify-center opacity-40 pointer-events-none">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-[10px] text-white font-bold">S</div>
+            <span className="text-xs font-bold tracking-[0.2em] uppercase text-slate-900">SereneStudy AI</span>
+          </div>
+        </footer>
+      )}
     </div>
   );
 };

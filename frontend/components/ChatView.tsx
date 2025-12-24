@@ -76,94 +76,96 @@ const ChatView: React.FC<ChatViewProps> = ({ task, onBack }) => {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto h-[calc(100vh-120px)] flex flex-col p-6 animate-fade-in bg-[#FBFCFB]">
-      {/* Header */}
-      <div className="flex items-center gap-6 mb-8">
-        <button onClick={onBack} className="p-2 hover:bg-slate-100 rounded-full text-slate-400 transition-colors">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-        </button>
-        <div>
-          <h2 className="text-2xl font-bold text-slate-800">AI Study Assistant</h2>
-          <p className="text-sm text-slate-400 font-light">Ask doubts, revise concepts, or get explanations instantly</p>
-        </div>
-      </div>
-
-      {/* Context Badge */}
-      <div className="mb-10 flex px-2 text-slate-800">
-        <div className="bg-[#EAF0EA] border border-[#DCE4DC] py-1.5 px-4 rounded-full flex items-center gap-3">
-          <svg className="w-4 h-4 text-[#5F855F]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
-          <span className="text-xs font-medium tracking-tight">Context: {task?.subject} — {task?.topic} — {task?.subtopic}</span>
-        </div>
-      </div>
-
-      {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto space-y-8 px-2 mb-8 scrollbar-hide">
-        {messages.map((m, i) => (
-          <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`flex gap-4 max-w-[85%] ${m.role === 'user' ? 'flex-row-reverse' : ''}`}>
-              {!m.role.includes('user') && (
-                <div className="w-8 h-8 rounded-full bg-[#EAF0EA] flex items-center justify-center flex-shrink-0 mt-1">
-                  <svg className="w-4 h-4 text-[#5F855F]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
-                </div>
-              )}
-              <div className={`p-5 rounded-2xl ${m.role === 'user'
-                ? 'bg-[#5F855F] text-white shadow-sm'
-                : 'bg-white border border-[#E8EDE8] text-slate-700 shadow-sm'
-                }`}>
-                {m.role === 'model' && i === 0 && <p className="text-[10px] font-bold text-[#8FB38F] uppercase tracking-wider mb-2">AI Assistant</p>}
-                <p className="text-[14px] leading-relaxed font-light">{m.text}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-        {isTyping && (
-          <div className="flex justify-start items-center gap-4">
-            <div className="w-8 h-8 rounded-full bg-[#EAF0EA] flex items-center justify-center flex-shrink-0">
-              <svg className="w-4 h-4 text-[#5F855F] animate-pulse" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
-            </div>
-            <div className="bg-white border border-[#E8EDE8] p-4 rounded-2xl shadow-sm flex gap-1">
-              <div className="w-1.5 h-1.5 bg-slate-200 rounded-full animate-bounce"></div>
-              <div className="w-1.5 h-1.5 bg-slate-200 rounded-full animate-bounce delay-75"></div>
-              <div className="w-1.5 h-1.5 bg-slate-200 rounded-full animate-bounce delay-150"></div>
-            </div>
-          </div>
-        )}
-        <div ref={endRef} />
-      </div>
-
-      {/* Action Chips */}
-      <div className="flex flex-wrap gap-3 mb-6 px-2">
-        {suggestions.map((s, idx) => (
-          <button
-            key={idx}
-            onClick={() => handleSend(s, true)}
-            className="bg-[#EAF0EA] text-[#334139] border border-[#DCE4DC] px-5 py-2 rounded-full text-[13px] font-medium transition-all hover:bg-[#DCE4DC] active:scale-95"
-          >
-            {s}
+    <div className="fixed inset-0 z-50 bg-[#FBFCFB] flex flex-col animate-fade-in">
+      <div className="w-full max-w-6xl mx-auto flex flex-col h-full bg-[#FBFCFB] shadow-2xl border-x border-slate-100">
+        {/* Header */}
+        <div className="flex-none flex items-center gap-6 p-4 border-b border-slate-100 bg-white/80 backdrop-blur-md z-10">
+          <button onClick={onBack} className="p-2 hover:bg-slate-100 rounded-full text-slate-400 transition-colors">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
-        ))}
-      </div>
+          <div>
+            <h2 className="text-xl font-bold text-slate-800">AI Study Assistant</h2>
+            <p className="text-xs text-slate-400 font-light">Ask doubts, revise concepts, or get explanations instantly</p>
+          </div>
+        </div>
 
-      {/* Input Area */}
-      <div className="flex gap-4 items-center bg-white p-2.5 pl-6 rounded-full border border-slate-200 shadow-sm focus-within:border-[#5F855F] focus-within:ring-2 focus-within:ring-[#5F855F]/10 transition-all">
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-          placeholder="Ask a question about your topic..."
-          className="flex-1 bg-transparent py-2.5 focus:outline-none text-[15px] font-light text-slate-700"
-        />
-        <button
-          onClick={() => handleSend()}
-          disabled={!input.trim() || isTyping}
-          className={`p-3 rounded-full transition-all flex items-center justify-center ${input.trim() ? 'bg-[#5F855F] text-white shadow-md hover:opacity-90 active:scale-90' : 'bg-slate-100 text-slate-300'
-            }`}
-        >
-          <svg className="w-5 h-5 rotate-45 transform -translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-        </button>
-      </div>
-      <div className="mt-4 text-center">
-        <p className="text-[10px] text-slate-300 font-medium">Press Enter to send • AI responses are generated to help with your current topic</p>
+        {/* Scrollable Content Area */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide flex flex-col relative bg-transparent">
+          {/* Context Badge pinned to top of scroll area or just inline */}
+          <div className="px-6 py-4">
+            <div className="bg-[#EAF0EA] border border-[#DCE4DC] py-1.5 px-4 rounded-full inline-flex items-center gap-3">
+              <svg className="w-4 h-4 text-[#5F855F]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+              <span className="text-xs font-medium tracking-tight truncate max-w-[200px] md:max-w-md">Context: {task?.subject} — {task?.topic} — {task?.subtopic}</span>
+            </div>
+          </div>
+
+          <div className="flex-1 px-6 pb-4 space-y-6">
+            {messages.map((m, i) => (
+              <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`flex gap-4 max-w-[85%] ${m.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                  {!m.role.includes('user') && (
+                    <div className="w-8 h-8 rounded-full bg-[#EAF0EA] flex items-center justify-center flex-shrink-0 mt-1">
+                      <svg className="w-4 h-4 text-[#5F855F]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
+                    </div>
+                  )}
+                  <div className={`p-5 rounded-2xl ${m.role === 'user'
+                    ? 'bg-[#5F855F] text-white shadow-sm'
+                    : 'bg-white border border-[#E8EDE8] text-slate-700 shadow-sm'
+                    }`}>
+                    {m.role === 'model' && i === 0 && <p className="text-[10px] font-bold text-[#8FB38F] uppercase tracking-wider mb-2">AI Assistant</p>}
+                    <p className="text-[14px] leading-relaxed font-light whitespace-pre-wrap">{m.text}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+            {isTyping && (
+              <div className="flex justify-start items-center gap-4">
+                <div className="w-8 h-8 rounded-full bg-[#EAF0EA] flex items-center justify-center flex-shrink-0">
+                  <svg className="w-4 h-4 text-[#5F855F] animate-pulse" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
+                </div>
+                <div className="bg-white border border-[#E8EDE8] p-4 rounded-2xl shadow-sm flex gap-1">
+                  <div className="w-1.5 h-1.5 bg-slate-200 rounded-full animate-bounce"></div>
+                  <div className="w-1.5 h-1.5 bg-slate-200 rounded-full animate-bounce delay-75"></div>
+                  <div className="w-1.5 h-1.5 bg-slate-200 rounded-full animate-bounce delay-150"></div>
+                </div>
+              </div>
+            )}
+            <div ref={endRef} />
+          </div>
+        </div>
+
+        {/* Input Area (Fixed Bottom) */}
+        <div className="flex-none p-4 pb-8 border-t border-slate-100 bg-white/80 backdrop-blur-md">
+          <div className="flex flex-wrap gap-2 mb-3">
+            {suggestions.map((s, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleSend(s, true)}
+                className="bg-[#EAF0EA] text-[#334139] border border-[#DCE4DC] px-4 py-1.5 rounded-full text-[11px] font-medium transition-all hover:bg-[#DCE4DC] active:scale-95"
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex gap-4 items-center bg-white p-2 pl-5 rounded-[24px] border border-slate-200 shadow-sm focus-within:border-[#5F855F] focus-within:ring-2 focus-within:ring-[#5F855F]/10 transition-all">
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+              placeholder="Ask a question about your topic..."
+              className="flex-1 bg-transparent py-2.5 focus:outline-none text-[15px] font-light text-slate-700"
+            />
+            <button
+              onClick={() => handleSend()}
+              disabled={!input.trim() || isTyping}
+              className={`p-2.5 rounded-full transition-all flex items-center justify-center ${input.trim() ? 'bg-[#5F855F] text-white shadow-md hover:opacity-90 active:scale-90' : 'bg-slate-100 text-slate-300'
+                }`}
+            >
+              <svg className="w-5 h-5 rotate-45 transform -translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

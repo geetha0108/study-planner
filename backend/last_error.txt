@@ -19,3 +19,31 @@ Error: Failed to generate study plan: result.text is not a function
     at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
     at async C:\Users\GEETHANJALI\planner\backend\server.js:313:28
 
+[2025-12-24T11:09:04.911Z] Plan Generation Error:
+Error: Failed to generate study plan: {"error":{"code":403,"message":"Your API key was reported as leaked. Please use another API key.","status":"PERMISSION_DENIED"}}
+Error: Failed to generate study plan: {"error":{"code":403,"message":"Your API key was reported as leaked. Please use another API key.","status":"PERMISSION_DENIED"}}
+    at generatePlanFromOnboarding (C:\Users\ishit\study-planner\backend\server.js:274:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async C:\Users\ishit\study-planner\backend\server.js:320:28
+
+[2025-12-24T11:14:52.000Z] Plan Generation Error:
+Error: Failed to generate study plan: {"error":{"code":403,"message":"Your API key was reported as leaked. Please use another API key.","status":"PERMISSION_DENIED"}}
+Error: Failed to generate study plan: {"error":{"code":403,"message":"Your API key was reported as leaked. Please use another API key.","status":"PERMISSION_DENIED"}}
+    at generatePlanFromOnboarding (C:\Users\ishit\study-planner\backend\server.js:274:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async C:\Users\ishit\study-planner\backend\server.js:320:28
+
+[2025-12-24T11:18:50.953Z] Plan Generation Error:
+Error: Failed to generate study plan: {"error":{"code":403,"message":"Your API key was reported as leaked. Please use another API key.","status":"PERMISSION_DENIED"}}
+Error: Failed to generate study plan: {"error":{"code":403,"message":"Your API key was reported as leaked. Please use another API key.","status":"PERMISSION_DENIED"}}
+    at generatePlanFromOnboarding (C:\Users\ishit\study-planner\backend\server.js:274:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async C:\Users\ishit\study-planner\backend\server.js:320:28
+
+[2025-12-24T11:20:49.990Z] Plan Generation Error:
+Error: Failed to generate study plan: {"error":{"code":403,"message":"Your API key was reported as leaked. Please use another API key.","status":"PERMISSION_DENIED"}}
+Error: Failed to generate study plan: {"error":{"code":403,"message":"Your API key was reported as leaked. Please use another API key.","status":"PERMISSION_DENIED"}}
+    at generatePlanFromOnboarding (C:\Users\ishit\study-planner\backend\server.js:274:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async C:\Users\ishit\study-planner\backend\server.js:320:28
+

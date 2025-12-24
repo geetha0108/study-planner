@@ -3,15 +3,18 @@
 @tailwind utilities;
 
 :root {
-    --primary: #2D3E35;
-    --sage-primary: #7F917F;
-    /* More muted, premium sage */
-    --sage-light: #F4F6F4;
-    --sage-border: #E0E5E0;
-    --bg-main: #FAFBFA;
-    --navy-banner: #1E293B;
-    --text-muted: #64748B;
-    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    /* New Coolors Palette: https://coolors.co/86cb92-71b48d-404e7c-251f47-260f26 */
+    --primary: #251f47;       /* Dark Navy/Purple - Main Text & Primary Backgrounds */
+    --sage-primary: #71b48d;  /* Medium Green - Primary Buttons & Accents */
+    --sage-light: #86cb92;    /* Light Green - lighter accents/hover states */
+    --accent-blue: #404e7c;   /* Blue - Secondary accents/headers */
+    --dark-purple: #260f26;   /* Very Dark Purple - Deep backgrounds/Footer */
+    
+    /* Utility colors mapping to new palette */
+    --bg-main: #FAFBFA;       /* Keep light background for readability */
+    --sage-border: #E0E5E0;   /* Keep sage border for now, maybe adjust later */
+    --navy-banner: var(--primary);
+    --card-shadow: 0 4px 12px rgba(37, 31, 71, 0.08); /* Shadow tinted with primary color */
 }
 
 body {

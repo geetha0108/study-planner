@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { OnboardingData } from '../types';
+import Carousel from './Carousel';
 
 interface OnboardingViewProps {
   onComplete: (data: OnboardingData) => void;
@@ -41,9 +42,9 @@ const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete, onLogout, i
 
   if (isSubmitting) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center bg-[#FBFCFB]">
-        <div className="w-12 h-12 border-4 border-[#EAF0EA] border-t-[#5F855F] rounded-full animate-spin mb-8"></div>
-        <h2 className="text-3xl font-bold text-[#2D3E35] tracking-tight mb-3">Generating your plan...</h2>
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center bg-[var(--bg-main)]">
+        <div className="w-12 h-12 border-4 border-[var(--sage-light)] border-t-[var(--sage-primary)] rounded-full animate-spin mb-8"></div>
+        <h2 className="text-3xl font-bold text-[var(--primary)] tracking-tight mb-3">Generating your plan...</h2>
         <p className="text-slate-400 font-light max-w-sm mx-auto leading-relaxed">Gemini is analyzing your goals to minimize your cognitive load.</p>
       </div>
     );
@@ -51,14 +52,14 @@ const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete, onLogout, i
 
   const PlanTypeSelector = () => (
     <div>
-      <label className="block text-[11px] font-bold text-[#8FB38F] uppercase tracking-[0.2em] mb-3 ml-1">Plan Intensity</label>
+      <label className="block text-xs font-bold text-[var(--sage-primary)] uppercase tracking-[0.2em] mb-3 ml-1">Plan Intensity</label>
       <div className="flex gap-3">
         {['balanced', 'intense'].map((type) => (
           <button
             key={type}
             type="button"
             onClick={() => setData({ ...data, planType: type as any })}
-            className={`flex-1 py-4 px-4 rounded-[20px] text-sm font-bold border transition-all ${data.planType === type ? 'bg-[#5F855F] text-white border-[#5F855F] shadow-md' : 'bg-white text-slate-400 border-[#E8EDE8] hover:border-[#5F855F]/30'
+            className={`flex-1 py-4 px-4 rounded-[20px] text-sm font-bold border transition-all ${data.planType === type ? 'bg-[var(--sage-primary)] text-white border-[var(--sage-primary)] shadow-md' : 'bg-white text-slate-400 border-[var(--sage-border)] hover:border-[var(--sage-primary)]/30'
               }`}
           >
             {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -69,14 +70,14 @@ const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete, onLogout, i
   );
 
   return (
-    <div className="max-w-xl mx-auto py-16 px-6 animate-fade-in bg-[#FBFCFB]">
+    <div className="max-w-xl mx-auto py-16 px-6 animate-fade-in bg-[var(--bg-main)]">
       <header className="mb-14 text-center">
-        <div className="w-16 h-16 bg-[#5F855F] rounded-3xl flex items-center justify-center mx-auto mb-6 text-white text-3xl font-bold shadow-[0_10px_20px_rgba(95,133,95,0.2)]">S</div>
-        <h1 className="text-3xl font-bold text-[#2D3E35] mb-2 tracking-tight">Focus your journey</h1>
-        <p className="text-slate-400 font-light mb-6">Choose how you'd like to prepare today.</p>
+        <div className="w-20 h-20 bg-[var(--primary)] rounded-[2rem] flex items-center justify-center mx-auto mb-6 text-white text-4xl font-bold shadow-xl">S</div>
+        <h1 className="text-4xl font-bold text-[var(--primary)] mb-2 tracking-tight">Focus your journey</h1>
+        <p className="text-slate-400 font-light mb-6 text-lg">Choose how you'd like to prepare today.</p>
         <button
           onClick={onLogout}
-          className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8FB38F] hover:text-red-400 transition-all active:scale-95"
+          className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--sage-primary)] hover:text-red-400 transition-all active:scale-95"
         >
           Sign Out
         </button>
@@ -86,19 +87,19 @@ const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete, onLogout, i
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <button
             onClick={() => selectMode('exam')}
-            className="group p-8 bg-white border border-[#E8EDE8] rounded-[32px] text-center hover:border-[#5F855F] hover:shadow-xl transition-all active:scale-[0.98]"
+            className="group p-8 bg-white border border-[var(--sage-border)] rounded-[32px] text-center hover:border-[var(--sage-primary)] hover:shadow-xl transition-all active:scale-[0.98]"
           >
             <div className="text-4xl mb-6 group-hover:scale-110 transition-transform">🎯</div>
-            <h3 className="text-xl font-bold text-[#2D3E35] mb-2 tracking-tight">Exam Prep</h3>
+            <h3 className="text-xl font-bold text-[var(--primary)] mb-2 tracking-tight">Exam Prep</h3>
             <p className="text-slate-400 font-light text-[14px] leading-relaxed">Targeted syllabus coverage for an upcoming deadline.</p>
           </button>
 
           <button
             onClick={() => selectMode('skill')}
-            className="group p-8 bg-white border border-[#E8EDE8] rounded-[32px] text-center hover:border-[#5F855F] hover:shadow-xl transition-all active:scale-[0.98]"
+            className="group p-8 bg-white border border-[var(--sage-border)] rounded-[32px] text-center hover:border-[var(--sage-primary)] hover:shadow-xl transition-all active:scale-[0.98]"
           >
             <div className="text-4xl mb-6 group-hover:scale-110 transition-transform">🌱</div>
-            <h3 className="text-xl font-bold text-[#2D3E35] mb-2 tracking-tight">Skill Building</h3>
+            <h3 className="text-xl font-bold text-[var(--primary)] mb-2 tracking-tight">Skill Building</h3>
             <p className="text-slate-400 font-light text-[14px] leading-relaxed">Self-paced learning to master a new craft or topic.</p>
           </button>
         </div>
@@ -108,33 +109,61 @@ const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete, onLogout, i
         <div className="animate-fade-in">
           <button
             onClick={handleBack}
-            className="flex items-center gap-2 text-[#8FB38F] hover:text-[#5F855F] mb-6 transition-colors group px-2"
+            className="flex items-center gap-2 text-[var(--sage-primary)] hover:text-[#5F855F] mb-6 transition-colors group px-2"
           >
             <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
             </svg>
-            <span className="text-[11px] font-bold uppercase tracking-widest">Change Mode</span>
+            <span className="text-xs font-bold uppercase tracking-widest">Change Mode</span>
           </button>
 
           {data.mode === 'exam' ? (
             <form onSubmit={handleNextStep} className="bg-white p-10 border border-[#E8EDE8] rounded-[40px] shadow-sm space-y-7">
-              <h2 className="text-2xl font-bold text-[#2D3E35] tracking-tight mb-2">Exam Details</h2>
+              <h2 className="text-2xl font-bold text-[var(--primary)] tracking-tight mb-2">Exam Details</h2>
 
               <div>
-                <label className="block text-[11px] font-bold text-[#8FB38F] uppercase tracking-[0.2em] mb-3 ml-1">Academic Level</label>
-                <input
-                  required
-                  className="w-full p-4.5 border border-[#E8EDE8] rounded-[20px] bg-white focus:outline-none focus:ring-4 focus:ring-[#5F855F]/5 focus:border-[#5F855F] transition-all text-slate-700 placeholder:text-slate-300"
-                  placeholder="e.g. College Freshman, GRE Student"
-                  onChange={(e) => setData({ ...data, level: e.target.value })}
-                />
+                <label className="block text-xs font-bold text-[var(--sage-primary)] uppercase tracking-[0.2em] mb-3 ml-1">Academic Level</label>
+                <div className="space-y-3">
+                  <select
+                    required
+                    className="w-full p-5 border border-[var(--sage-border)] rounded-[24px] bg-white focus:outline-none focus:ring-4 focus:ring-[var(--sage-primary)]/10 focus:border-[var(--sage-primary)] transition-all text-slate-700 text-lg appearance-none cursor-pointer"
+                    value={['High School', 'Undergraduate', 'Postgraduate', 'Professional Certification', 'Lifelong Learner'].includes(data.level) ? data.level : (data.level ? 'Other' : '')}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === 'Other') {
+                        setData({ ...data, level: ' ' });
+                      } else {
+                        setData({ ...data, level: val });
+                      }
+                    }}
+                  >
+                    <option value="" disabled>Select your level</option>
+                    <option value="High School">High School</option>
+                    <option value="Undergraduate">Undergraduate</option>
+                    <option value="Postgraduate">Postgraduate</option>
+                    <option value="Professional Certification">Professional Certification</option>
+                    <option value="Lifelong Learner">Lifelong Learner</option>
+                    <option value="Other">Other (Custom)</option>
+                  </select>
+
+                  {(!['High School', 'Undergraduate', 'Postgraduate', 'Professional Certification', 'Lifelong Learner'].includes(data.level) && (data.level === ' ' || (data.level && data.level.length > 0))) && (
+                    <input
+                      autoFocus
+                      required
+                      className="w-full p-5 border border-[var(--sage-border)] rounded-[24px] bg-white focus:outline-none focus:ring-4 focus:ring-[var(--sage-primary)]/10 focus:border-[var(--sage-primary)] transition-all text-slate-700 placeholder:text-slate-300 text-lg animate-fade-in"
+                      placeholder="Type your specific level..."
+                      value={['High School', 'Undergraduate', 'Postgraduate', 'Professional Certification', 'Lifelong Learner'].includes(data.level) ? '' : (data.level === ' ' ? '' : data.level)}
+                      onChange={(e) => setData({ ...data, level: e.target.value })}
+                    />
+                  )}
+                </div>
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-[#8FB38F] uppercase tracking-[0.2em] mb-3 ml-1">Syllabus Scope</label>
+                <label className="block text-xs font-bold text-[var(--sage-primary)] uppercase tracking-[0.2em] mb-3 ml-1">Syllabus Scope</label>
                 <textarea
                   required
-                  className="w-full p-4.5 border border-[#E8EDE8] rounded-[20px] bg-white focus:outline-none focus:ring-4 focus:ring-[#5F855F]/5 focus:border-[#5F855F] min-h-[120px] transition-all text-slate-700 placeholder:text-slate-300"
+                  className="w-full p-5 border border-[var(--sage-border)] rounded-[24px] bg-white focus:outline-none focus:ring-4 focus:ring-[var(--sage-primary)]/10 focus:border-[var(--sage-primary)] min-h-[120px] transition-all text-slate-700 placeholder:text-slate-300 text-lg"
                   placeholder="e.g. Quantum Physics basics, Organic Chemistry..."
                   onChange={(e) => setData({ ...data, syllabus: e.target.value })}
                 />
@@ -142,22 +171,22 @@ const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete, onLogout, i
 
               <div className="grid grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-[11px] font-bold text-[#8FB38F] uppercase tracking-[0.2em] mb-3 ml-1">Deadline</label>
+                  <label className="block text-xs font-bold text-[var(--sage-primary)] uppercase tracking-[0.2em] mb-3 ml-1">Deadline</label>
                   <input
                     required
                     type="date"
-                    className="w-full p-4.5 border border-[#E8EDE8] rounded-[20px] bg-white focus:outline-none focus:border-[#5F855F] transition-all text-slate-700"
+                    className="w-full p-5 border border-[var(--sage-border)] rounded-[24px] bg-white focus:outline-none focus:border-[var(--sage-primary)] transition-all text-slate-700 text-lg"
                     onChange={(e) => setData({ ...data, examDate: e.target.value })}
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-bold text-[#8FB38F] uppercase tracking-[0.2em] mb-3 ml-1">Daily Cap</label>
+                  <label className="block text-xs font-bold text-[var(--sage-primary)] uppercase tracking-[0.2em] mb-3 ml-1">Daily Cap</label>
                   <input
                     required
                     type="number"
                     min="1"
                     max="12"
-                    className="w-full p-4.5 border border-[#E8EDE8] rounded-[20px] bg-white focus:outline-none focus:border-[#5F855F] transition-all text-slate-700"
+                    className="w-full p-5 border border-[var(--sage-border)] rounded-[24px] bg-white focus:outline-none focus:border-[var(--sage-primary)] transition-all text-slate-700 text-lg"
                     placeholder="4 hrs"
                     onChange={(e) => setData({ ...data, hoursPerDay: parseInt(e.target.value) })}
                   />
@@ -168,7 +197,7 @@ const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete, onLogout, i
 
               <button
                 type="submit"
-                className="w-full bg-[#5F855F] text-white py-4.5 rounded-[22px] font-bold text-[15px] hover:bg-[#4E6D4E] transition-all shadow-[0_10px_20px_rgba(95,133,95,0.15)] active:scale-[0.98] mt-4"
+                className="w-full bg-[var(--sage-primary)] text-white py-5 rounded-[28px] font-bold text-lg hover:bg-[#65a880] transition-all shadow-xl active:scale-[0.98] mt-6"
               >
                 Assemble Plan
               </button>
@@ -178,20 +207,20 @@ const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete, onLogout, i
               <h2 className="text-2xl font-bold text-[#2D3E35] tracking-tight mb-2">Skill Goal</h2>
 
               <div>
-                <label className="block text-[11px] font-bold text-[#8FB38F] uppercase tracking-[0.2em] mb-3 ml-1">Fluency Target</label>
+                <label className="block text-xs font-bold text-[var(--sage-primary)] uppercase tracking-[0.2em] mb-3 ml-1">Fluency Target</label>
                 <input
                   required
-                  className="w-full p-4.5 border border-[#E8EDE8] rounded-[20px] bg-white focus:outline-none focus:ring-4 focus:ring-[#5F855F]/5 focus:border-[#5F855F] transition-all text-slate-700 placeholder:text-slate-300"
+                  className="w-full p-5 border border-[var(--sage-border)] rounded-[24px] bg-white focus:outline-none focus:ring-4 focus:ring-[var(--sage-primary)]/10 focus:border-[var(--sage-primary)] transition-all text-slate-700 placeholder:text-slate-300 text-lg"
                   placeholder="e.g. Mid-level mastery"
                   onChange={(e) => setData({ ...data, level: e.target.value })}
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-[#8FB38F] uppercase tracking-[0.2em] mb-3 ml-1">Skill Area</label>
+                <label className="block text-xs font-bold text-[var(--sage-primary)] uppercase tracking-[0.2em] mb-3 ml-1">Skill Area</label>
                 <input
                   required
-                  className="w-full p-4.5 border border-[#E8EDE8] rounded-[20px] bg-white focus:outline-none focus:ring-4 focus:ring-[#5F855F]/5 focus:border-[#5F855F] transition-all text-slate-700 placeholder:text-slate-300"
+                  className="w-full p-5 border border-[var(--sage-border)] rounded-[24px] bg-white focus:outline-none focus:ring-4 focus:ring-[var(--sage-primary)]/10 focus:border-[var(--sage-primary)] transition-all text-slate-700 placeholder:text-slate-300 text-lg"
                   placeholder="e.g. Modern UI Design with Figma"
                   onChange={(e) => setData({ ...data, skill: e.target.value })}
                 />
@@ -199,22 +228,22 @@ const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete, onLogout, i
 
               <div className="grid grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-[11px] font-bold text-[#8FB38F] uppercase tracking-[0.2em] mb-3 ml-1">Duration</label>
+                  <label className="block text-xs font-bold text-[var(--sage-primary)] uppercase tracking-[0.2em] mb-3 ml-1">Duration</label>
                   <input
                     required
-                    className="w-full p-4.5 border border-[#E8EDE8] rounded-[20px] bg-white focus:outline-none focus:border-[#5F855F] transition-all text-slate-700"
+                    className="w-full p-5 border border-[var(--sage-border)] rounded-[24px] bg-white focus:outline-none focus:border-[var(--sage-primary)] transition-all text-slate-700 text-lg"
                     placeholder="e.g. 8 weeks"
                     onChange={(e) => setData({ ...data, skillDuration: e.target.value })}
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-bold text-[#8FB38F] uppercase tracking-[0.2em] mb-3 ml-1">Daily Cap</label>
+                  <label className="block text-xs font-bold text-[var(--sage-primary)] uppercase tracking-[0.2em] mb-3 ml-1">Daily Cap</label>
                   <input
                     required
                     type="number"
                     min="1"
                     max="12"
-                    className="w-full p-4.5 border border-[#E8EDE8] rounded-[20px] bg-white focus:outline-none focus:border-[#5F855F] transition-all text-slate-700"
+                    className="w-full p-5 border border-[var(--sage-border)] rounded-[24px] bg-white focus:outline-none focus:border-[var(--sage-primary)] transition-all text-slate-700 text-lg"
                     placeholder="2 hrs"
                     onChange={(e) => setData({ ...data, hoursPerDay: parseInt(e.target.value) })}
                   />
@@ -225,7 +254,7 @@ const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete, onLogout, i
 
               <button
                 type="submit"
-                className="w-full bg-[#5F855F] text-white py-4.5 rounded-[22px] font-bold text-[15px] hover:bg-[#4E6D4E] transition-all shadow-[0_10px_20px_rgba(95,133,95,0.15)] active:scale-[0.98] mt-4"
+                className="w-full bg-[var(--sage-primary)] text-white py-5 rounded-[28px] font-bold text-lg hover:bg-[#65a880] transition-all shadow-xl active:scale-[0.98] mt-6"
               >
                 Assemble Plan
               </button>
@@ -238,7 +267,7 @@ const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete, onLogout, i
         <div className="animate-fade-in">
           <button
             onClick={handleBack}
-            className="flex items-center gap-2 text-[#8FB38F] hover:text-[#5F855F] mb-8 transition-colors group px-2"
+            className="flex items-center gap-2 text-[var(--sage-primary)] hover:text-[#5F855F] mb-8 transition-colors group px-2"
           >
             <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
@@ -246,33 +275,29 @@ const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete, onLogout, i
             <span className="text-[11px] font-bold uppercase tracking-widest">Back to Details</span>
           </button>
 
-          <h2 className="text-2xl font-bold text-[#2D3E35] mb-10 px-2 text-center tracking-tight">How do you learn best?</h2>
+          <h2 className="text-2xl font-bold text-[var(--primary)] mb-10 px-2 text-center tracking-tight">How do you learn best?</h2>
 
-          <div className="grid grid-cols-1 gap-4">
-            {[
-              { id: 'Mixed', title: 'Equally (Default)', desc: 'Balanced mix of theory, examples, and recall point.', icon: '⚖️' },
-              { id: 'Flashcards', title: 'Recall Driven', desc: 'Short Q&A, definitions, and key facts for memory.', icon: '🃏' },
-              { id: 'Analogies', title: 'Analogy Heavy', desc: 'Intuitive everyday examples for conceptual clarity.', icon: '💡' },
-              { id: 'Practice', title: 'Practice First', desc: 'Worked examples and step-by-step problem solving.', icon: '✍️' }
-            ].map((style) => (
-              <button
-                key={style.id}
-                onClick={() => handleFinish(style.id as any)}
-                className="flex items-center gap-6 p-6 bg-white border border-[#E8EDE8] rounded-[32px] text-left hover:border-[#5F855F] hover:shadow-xl transition-all group active:scale-[0.99]"
-              >
-                <div className="text-3xl bg-[#F1F5F1] w-16 h-16 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">{style.icon}</div>
-                <div>
-                  <h3 className="text-lg font-bold text-[#2D3E35] mb-1 tracking-tight">{style.title}</h3>
-                  <p className="text-slate-400 font-light text-sm leading-relaxed">{style.desc}</p>
-                </div>
-                <div className="ml-auto w-8 h-8 rounded-full border border-[#E8EDE8] group-hover:bg-[#5F855F] group-hover:border-[#5F855F] transition-all flex items-center justify-center">
-                  <svg className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-              </button>
-            ))}
-          </div>
+          <Carousel items={[
+            { id: 'Mixed', title: 'Equally (Default)', desc: 'Balanced mix of theory, examples, and recall point.', icon: '⚖️' },
+            { id: 'Flashcards', title: 'Recall Driven', desc: 'Short Q&A, definitions, and key facts for memory.', icon: '🃏' },
+            { id: 'Analogies', title: 'Analogy Heavy', desc: 'Intuitive everyday examples for conceptual clarity.', icon: '💡' },
+            { id: 'Practice', title: 'Practice First', desc: 'Worked examples and step-by-step problem solving.', icon: '✍️' }
+          ].map((style) => (
+            <button
+              key={style.id}
+              onClick={() => handleFinish(style.id as any)}
+              className="flex flex-col items-center justify-center gap-6 p-6 w-full text-center hover:bg-slate-50 transition-colors rounded-[32px] group"
+            >
+              <div className="text-6xl bg-[var(--bg-main)] w-32 h-32 rounded-[32px] flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">{style.icon}</div>
+              <div>
+                <h3 className="text-2xl font-bold text-[var(--primary)] mb-2 tracking-tight">{style.title}</h3>
+                <p className="text-slate-400 font-light text-base leading-relaxed max-w-xs mx-auto">{style.desc}</p>
+              </div>
+              <div className="mt-4 px-8 py-3 rounded-full bg-[var(--sage-primary)] text-white font-bold opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
+                Select Style
+              </div>
+            </button>
+          ))} />
         </div>
       )}
     </div>
