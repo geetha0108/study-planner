@@ -87,7 +87,7 @@ study-planner/
 
 ---
 
-## 🚀 Getting Started
+### 🚀 Quick Start Setup
 
 ### Prerequisites
 
@@ -275,103 +275,9 @@ The frontend will start on `http://localhost:3000`
 ```bash
 cd frontend
 npm run build
+# Creates optimized build in dist/
+
+# Backend for production
+cd ../backend
+NODE_ENV=production node server.js
 ```
-
-This creates an optimized production build in the `frontend/dist` directory.
-
-### Backend Production
-
-```bash
-cd backend
-NODE_ENV=production npm start
-```
-
-For production deployment:
-- Use a process manager like **PM2** to keep the server running
-- Set up **HTTPS** with a reverse proxy (nginx, Apache)
-- Use **Azure Cosmos DB** (not the emulator)
-- Enable proper **CORS** settings for your domain
-- Set up **environment variables** on your hosting platform
-
----
-
-## 🐛 Troubleshooting
-
-### Backend Issues
-
-#### "Database initialization failed"
-- **Cosmos DB Emulator**: Ensure the emulator is running on `https://localhost:8081`
-- **Azure Cosmos DB**: Check your endpoint and key in `.env`
-- **Firewall**: Ensure port 8081 (emulator) or 443 (Azure) is not blocked
-
-#### "Gemini API Error"
-- Verify your `GEMINI_API_KEY` in `.env`
-- Check your API quota at [Google AI Studio](https://aistudio.google.com/)
-- Ensure you're using a valid API key (starts with `AIza...`)
-
-#### "Port 3001 already in use"
-- Change the `PORT` in `backend/.env`
-- Or stop the process using port 3001:
-  ```bash
-  # Windows
-  netstat -ano | findstr :3001
-  taskkill /PID <PID> /F
-  
-  # macOS/Linux
-  lsof -ti:3001 | xargs kill -9
-  ```
-
-### Frontend Issues
-
-#### "Cannot connect to backend"
-- Ensure the backend is running on `http://localhost:3001`
-- Check the proxy configuration in `frontend/vite.config.ts`
-- Clear your browser cache and reload
-
-#### "Module not found" errors
-- Delete `node_modules` and `package-lock.json`
-- Run `npm install` again
-
-### General Issues
-
-#### "CORS errors"
-- The backend has CORS enabled for all origins in development
-- For production, update the CORS configuration in `server.js`
-
-#### "Self-signed certificate" errors
-- This is expected when using Cosmos DB Emulator
-- The application disables SSL verification for local development
-- For production, remove the `NODE_TLS_REJECT_UNAUTHORIZED` setting
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
----
-
-## 📄 License
-
-This project is part of an academic assignment.
-
----
-
-## 👥 Team
-
-- **Ishita Puranik** - [ishitapurk14@gmail.com](mailto:ishitapurk14@gmail.com)
-- **Spoorthi Chava** - [spoorthichava06@gmail.com](mailto:spoorthichava06@gmail.com)
-- **Geethanjali Bathini** - [geethanjalibathini7@gmail.com](mailto:geethanjalibathini7@gmail.com)
-- **Mahek Muskaan Shaik** - [mahekm.shaik@gmail.com](mailto:mahekm.shaik@gmail.com)
-
----
-
-## 🙏 Acknowledgments
-
-- Google Gemini AI for powering the intelligent features
-- Azure Cosmos DB for reliable data storage
-- The open-source community for amazing tools and libraries
-
----
-
-**Happy Studying! 📚✨**
