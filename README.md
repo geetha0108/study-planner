@@ -88,8 +88,8 @@ planner/
 ├── README.md
 └── .gitignore
 ---
-
-#### 1. 🚀 Quick Start Setup
+```
+### 🚀 Quick Start Setup
 
 ### Prerequisites
 - **Node.js** (v14 or higher) and npm
@@ -151,4 +151,5 @@ npm run build
 # Backend for production
 cd ../backend
 NODE_ENV=production node server.js
+
 ```
