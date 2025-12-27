@@ -225,9 +225,27 @@ DO NOT include any Markdown formatting or keys like "tasks" or "plan". Just the 
 
   try {
     console.log(`Calling Gemini API (attempt ${retryCount + 1}/${MAX_RETRIES + 1})...`);
+
+    const parts = [{ text: `${systemPrompt}\n\nINPUT:\n${userPrompt}` }];
+
+    // Add syllabus files as multi-modal parts if available
+    if (data.syllabusFiles && Array.isArray(data.syllabusFiles)) {
+      data.syllabusFiles.forEach(file => {
+        if (file.data && file.type) {
+          parts.push({
+            inlineData: {
+              data: file.data,
+              mimeType: file.type
+            }
+          });
+        }
+      });
+      parts.push({ text: "\nPlease use the provided syllabus files above to structure the topics and subtopics accurately." });
+    }
+
     const result = await genAI.models.generateContent({
       model: "gemini-2.5-flash",
-      contents: [{ role: "user", parts: [{ text: `${systemPrompt}\n\nINPUT:\n${userPrompt}` }] }],
+      contents: [{ role: "user", parts }],
       config: {
         responseMimeType: "application/json",
       }

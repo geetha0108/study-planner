@@ -19,6 +19,7 @@ const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete, onLogout, i
     hoursPerDay: userDailyHours
   } as OnboardingData);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const selectMode = (mode: 'exam' | 'skill') => {
     setData({ ...data, mode });
@@ -39,6 +40,59 @@ const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete, onLogout, i
     setIsSubmitting(true);
     const finalData = { ...data, learningStyle: style };
     onComplete(finalData);
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = e.target.files;
+    if (!selectedFiles) return;
+
+    const currentFiles = data.syllabusFiles || [];
+    if (currentFiles.length + selectedFiles.length > 10) {
+      alert("You can upload a maximum of 10 files.");
+      return;
+    }
+
+    setIsUploading(true);
+    const newFiles: { name: string, data: string, type: string }[] = [...currentFiles];
+    let processedCount = 0;
+
+    Array.from(selectedFiles).forEach((file: File) => {
+      const reader = new FileReader();
+      reader.onload = (event: ProgressEvent<FileReader>) => {
+        const base64Content = event.target?.result as string;
+        if (!base64Content) {
+          processedCount++;
+          if (processedCount === selectedFiles.length) setIsUploading(false);
+          return;
+        }
+
+        // Extract pure base64 if it's a data URL
+        const base64Data = base64Content.includes('base64,') ? base64Content.split('base64,')[1] : base64Content;
+
+        newFiles.push({
+          name: file.name,
+          data: base64Data,
+          type: file.type || 'application/octet-stream'
+        });
+
+        processedCount++;
+        if (processedCount === selectedFiles.length) {
+          setData(prev => ({ ...prev, syllabusFiles: newFiles }));
+          setIsUploading(false);
+        }
+      };
+      reader.onerror = () => {
+        processedCount++;
+        if (processedCount === selectedFiles.length) setIsUploading(false);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const removeFile = (index: number) => {
+    const currentFiles = data.syllabusFiles || [];
+    const newFiles = currentFiles.filter((_, i) => i !== index);
+    setData({ ...data, syllabusFiles: newFiles });
   };
 
   if (isSubmitting) {
@@ -178,6 +232,56 @@ const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete, onLogout, i
                   className="w-full p-5 border border-[var(--sage-border)] rounded-[24px] bg-white focus:outline-none focus:border-[var(--sage-primary)] transition-all text-slate-700 text-lg"
                   onChange={(e) => setData({ ...data, examDate: e.target.value })}
                 />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[var(--sage-primary)] uppercase tracking-[0.2em] mb-3 ml-1">Syllabus Documents (Optional - Max 10)</label>
+                <div className="space-y-4">
+                  <div className="relative">
+                    <input
+                      type="file"
+                      multiple
+                      accept=".pdf,.doc,.docx,.ppt,.pptx,image/*"
+                      onChange={handleFileUpload}
+                      className="hidden"
+                      id="syllabus-upload"
+                      disabled={isUploading}
+                    />
+                    <label
+                      htmlFor="syllabus-upload"
+                      className={`flex items-center justify-center gap-3 w-full p-5 border-2 border-dashed border-[var(--sage-border)] rounded-[24px] cursor-pointer hover:border-[var(--sage-primary)] hover:bg-[var(--sage-primary)]/5 transition-all text-slate-500 font-medium ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                      </svg>
+                      {isUploading ? 'Processing files...' : 'Upload PDF, Word, PPT or Images'}
+                    </label>
+                  </div>
+
+                  {data.syllabusFiles && data.syllabusFiles.length > 0 && (
+                    <div className="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto no-scrollbar p-2">
+                      {data.syllabusFiles.map((file, idx) => (
+                        <div key={idx} className="flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-xl text-sm animate-fade-in">
+                          <div className="flex items-center gap-3 overflow-hidden">
+                            <span className="text-lg">
+                              {file.type.includes('image') ? '🖼️' : file.type.includes('pdf') ? '📄' : '📁'}
+                            </span>
+                            <span className="truncate text-slate-600 font-medium">{file.name}</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => removeFile(idx)}
+                            className="text-slate-400 hover:text-red-500 transition-colors p-1"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
               <PlanTypeSelector />
