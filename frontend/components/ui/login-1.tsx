@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import adaptaLogo from '../../assets/adapta-logo.png';
+import { getApiBaseUrl } from '../../lib/api';
 
 interface LoginScreenProps {
     onAuthSuccess: (token: string) => void;
@@ -35,15 +36,14 @@ export default function LoginScreen({ onAuthSuccess }: LoginScreenProps) {
         setIsLoading(true);
 
         const endpoint = isLogin ? '/api/auth/login' : '/api/auth/signup';
-        // Use relative path to leverage Vite proxy
-        const apiUrl = '';
+        const apiBaseUrl = getApiBaseUrl();
 
         try {
             const body = isLogin
                 ? { email: formData.email, password: formData.password }
                 : { name: formData.name, email: formData.email, password: formData.password, dailyHours: formData.dailyHours };
 
-            const response = await fetch(`${endpoint}`, {
+            const response = await fetch(`${apiBaseUrl}${endpoint}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body),

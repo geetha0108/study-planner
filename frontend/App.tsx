@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { Screen, StudyTask, AIInsight, OnboardingData, QuizResult } from './types';
 import { MOCK_INSIGHTS } from './constants';
 import { evaluateQuizPerformance, chatWithAI, getAIResources } from './services/geminiService';
+import { getApiBaseUrl } from './lib/api';
 import StudyDashboard from './components/StudyDashboard';
 import QuizScreen from './components/QuizScreen';
 import InsightsPanel from './components/InsightsPanel';
@@ -80,7 +81,8 @@ const App: React.FC = () => {
       let targetScreen: Screen = 'onboarding';
 
       // Fetch user profile
-      const profileResponse = await fetch('/api/user/profile', {
+      const apiBaseUrl = getApiBaseUrl();
+      const profileResponse = await fetch(`${apiBaseUrl}/api/user/profile`, {
         headers: { 'Authorization': `Bearer ${authToken}` }
       });
 
@@ -93,7 +95,7 @@ const App: React.FC = () => {
       }
 
       // Fetch Active Plans and Tasks from the unified endpoint
-      const activePlanResponse = await fetch('/api/study-plan/active', {
+      const activePlanResponse = await fetch(`${apiBaseUrl}/api/study-plan/active`, {
         headers: { 'Authorization': `Bearer ${authToken}` }
       });
 
@@ -135,7 +137,8 @@ const App: React.FC = () => {
     try {
       if (!token) return;
 
-      const response = await fetch('/api/user/mood', {
+      const apiBaseUrl = getApiBaseUrl();
+      const response = await fetch(`${apiBaseUrl}/api/user/mood`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -159,7 +162,8 @@ const App: React.FC = () => {
 
   const fetchInsights = useCallback(async (authToken: string) => {
     try {
-      const response = await fetch('/api/insights', {
+      const apiBaseUrl = getApiBaseUrl();
+      const response = await fetch(`${apiBaseUrl}/api/insights`, {
         headers: { 'Authorization': `Bearer ${authToken}` }
       });
       if (response.ok) {
@@ -181,7 +185,8 @@ const App: React.FC = () => {
       if (!token) return;
 
       // Call unified generation endpoint
-      const response = await fetch('/api/study-plan/generate', {
+      const apiBaseUrl = getApiBaseUrl();
+      const response = await fetch(`${apiBaseUrl}/api/study-plan/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -234,7 +239,8 @@ const App: React.FC = () => {
       ));
 
       if (token) {
-        await fetch(`/api/tasks/${taskId}/progress`, {
+        const apiBaseUrl = getApiBaseUrl();
+        await fetch(`${apiBaseUrl}/api/tasks/${taskId}/progress`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
@@ -286,7 +292,8 @@ const App: React.FC = () => {
       if (result.suggestedRevisionTasks && result.suggestedRevisionTasks.length > 0) {
         try {
           if (token) {
-            const response = await fetch('/api/tasks', {
+            const apiBaseUrl = getApiBaseUrl();
+            const response = await fetch(`${apiBaseUrl}/api/tasks`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -318,7 +325,8 @@ const App: React.FC = () => {
     // Refresh user profile from server to get updated streak and history
     if (token) {
       try {
-        const profileResponse = await fetch('/api/user/profile', {
+        const apiBaseUrl = getApiBaseUrl();
+        const profileResponse = await fetch(`${apiBaseUrl}/api/user/profile`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (profileResponse.ok) {
