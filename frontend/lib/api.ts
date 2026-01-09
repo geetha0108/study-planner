@@ -3,21 +3,22 @@
 
 /**
  * Get the base API URL based on the environment
- * - In production: uses VITE_API_URL environment variable
+ * - In production: uses hardcoded production URL (works for static site builds)
  * - In development: uses empty string (relies on Vite proxy)
  */
 export function getApiBaseUrl(): string {
-    // In production, use the environment variable
-    // In development, return empty string to use Vite's proxy
-    const apiUrl = import.meta.env.VITE_API_URL;
+    // Runtime detection avoids build-time environment variable issues for static sites
+    const hostname = window.location.hostname;
+    const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
 
-    if (apiUrl) {
-        // Remove trailing slash if present
-        return apiUrl.endsWith('/') ? apiUrl.slice(0, -1) : apiUrl;
+    if (isLocalhost) {
+        // Development mode - use Vite proxy (empty string means relative URLs)
+        return '';
     }
 
-    // Development mode - use Vite proxy (empty string means relative URLs)
-    return '';
+    // Production mode - use the Render backend URL
+    // We use this fallback instead of relying solely on env vars which can be tricky with static builds
+    return 'https://study-planner-adapta.onrender.com';
 }
 
 /**
