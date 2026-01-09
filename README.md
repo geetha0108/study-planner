@@ -4,6 +4,13 @@
 
 ---
 
+## 🔗 Important Links
+
+- **🚀 Deployed MVP**: [https://adapta-ai-planner.onrender.com/](https://adapta-ai-planner.onrender.com/)
+- **🎥 Demo Video**: [Watch on YouTube](https://www.youtube.com/watch?v=9zh7s92oDgg&t=11s)
+
+---
+
 ## 📖 Overview
 
 Adapta AI combines modern web technologies with AI to create a stress-free learning experience. The application adapts to your schedule, learning style, and exam dates to generate optimized study plans.
