@@ -1,11 +1,16 @@
 
 import { QuizQuestion, QuizResult, StudyResource, StudyTask, OnboardingData } from "../types";
+import { getApiBaseUrl } from "../lib/api";
 
 const getAuthToken = () => localStorage.getItem('authToken');
 
 const apiFetch = async (endpoint: string, options: any = {}) => {
   const token = getAuthToken();
-  const res = await fetch(endpoint, {
+  const apiBaseUrl = getApiBaseUrl();
+  // Ensure we don't double-slash or miss a slash if needed, though getApiBaseUrl handles trailing slash removal
+  const url = `${apiBaseUrl}${endpoint}`;
+
+  const res = await fetch(url, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
